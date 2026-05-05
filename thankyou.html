@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Confirmed – NaturaGene Knee Patch</title>
+<link href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   RESET
+═══════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+/* ═══════════════════════════════════════
+   CSS VARIABLES
+═══════════════════════════════════════ */
+:root{
+  --gd:#1B5E20; --gm:#2E7D32; --gn:#388E3C; --gl:#66BB6A;
+  --gp:#E8F5E9; --gf:#F0F7F0;
+  --wa:#25D366; --wd:#128C7E;
+  --gold:#F9A825; --gold-bg:#FFF8E1;
+  --bp:#1565C0;  --bl:#E3F2FD;
+  --td:#1A2E1A;  --tm:#3D5A3D; --ts:#6A8F6A;
+  --white:#fff;
+  --sh-s:0 2px 12px rgba(46,125,50,.10);
+  --sh-m:0 6px 30px rgba(46,125,50,.16);
+  --sh-l:0 16px 60px rgba(46,125,50,.22);
+  --r:20px; --rl:32px;
+}
+
+/* ═══════════════════════════════════════
+   BODY & BACKGROUND
+═══════════════════════════════════════ */
+body{
+  font-family:'Nunito',sans-serif;
+  background:var(--gf);
+  color:var(--td);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 5%  5%,  rgba(102,187,106,.14)0%,transparent 55%),
+    radial-gradient(ellipse 50% 70% at 95% 95%, rgba(46,125,50,.11) 0%,transparent 55%),
+    radial-gradient(ellipse 40% 40% at 50% 50%, rgba(232,245,233,.55)0%,transparent 70%);
+}
+
+/* ═══════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes popIn{0%{opacity:0;transform:scale(.55)}70%{transform:scale(1.10)}100%{opacity:1;transform:scale(1)}}
+@keyframes pulseRing{0%{box-shadow:0 0 0 0 rgba(255,255,255,.55)}70%{box-shadow:0 0 0 22px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
+@keyframes shimmer{0%{background-position:-500px 0}100%{background-position:500px 0}}
+@keyframes bounceWa{0%,100%{transform:translateY(0)scale(1)}30%{transform:translateY(-7px)scale(1.03)}60%{transform:translateY(-2px)scale(1.01)}}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes waveBar{0%,100%{height:5px}50%{height:18px}}
+@keyframes soundPulse{0%,100%{transform:scale(1);opacity:.85}50%{transform:scale(1.14);opacity:1}}
+
+.fadeUp{animation:fadeUp .65s ease both}
+.d1{animation-delay:.10s}.d2{animation-delay:.25s}.d3{animation-delay:.40s}
+.d4{animation-delay:.55s}.d5{animation-delay:.70s}.d6{animation-delay:.85s}.d7{animation-delay:1s}
+
+/* ═══════════════════════════════════════
+   PAGE WRAPPER — MOBILE FIRST
+═══════════════════════════════════════ */
+.pw{
+  position:relative;z-index:1;
+  width:100%;max-width:500px;
+  margin:0 auto;
+  padding:16px 16px 60px;
+}
+
+/* ── TABLET (600px+) ── */
+@media(min-width:600px){
+  .pw{max-width:640px;padding:24px 28px 64px}
+}
+
+/* ── DESKTOP / WINDOW (960px+) ── */
+@media(min-width:960px){
+  body{padding:0 24px}
+  .pw{
+    max-width:1020px;
+    padding:36px 0 80px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-areas:
+      "brand   brand"
+      "hero    hero"
+      "ticker  ticker"
+      "trust   wa"
+      "summary wa"
+      "stats   stats"
+      "urgency urgency"
+      "footer  footer";
+    column-gap:26px;
+    align-items:start;
+  }
+  .brand-bar    {grid-area:brand}
+  .hero-card    {grid-area:hero}
+  .ticker-wrap  {grid-area:ticker}
+  .trust-card   {grid-area:trust;  margin-top:22px}
+  .wa-card      {grid-area:wa;     margin-top:22px;position:sticky;top:28px}
+  .summary-card {grid-area:summary;margin-top:18px}
+  .stats-grid   {grid-area:stats;  margin-top:22px}
+  .urgency-banner{grid-area:urgency;margin-top:22px}
+  .footer       {grid-area:footer}
+}
+
+/* ═══════════════════════════════════════
+   SOUND BUTTON + SC IFRAME HIDDEN
+═══════════════════════════════════════ */
+.snd-btn{
+  position:fixed;bottom:22px;right:16px;z-index:9999;
+  width:52px;height:52px;border-radius:50%;
+  background:var(--gm);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 22px rgba(46,125,50,.42);
+  transition:background .2s,transform .15s;
+  animation:soundPulse 2.6s ease infinite;
+}
+.snd-btn:hover{background:var(--gd);transform:scale(1.09);animation:none}
+.snd-btn:active{transform:scale(.93)}
+.wave-bars{display:flex;align-items:flex-end;gap:3px;height:20px}
+.wave-bars span{display:block;width:4px;background:#fff;border-radius:3px;animation:waveBar .75s ease infinite}
+.wave-bars span:nth-child(2){animation-delay:.15s}
+.wave-bars span:nth-child(3){animation-delay:.30s}
+.wave-bars span:nth-child(4){animation-delay:.45s}
+.mute-icon{display:none}
+/* SoundCloud hidden iframe */
+#sc-wrap{
+  position:fixed;width:1px;height:1px;
+  bottom:0;left:0;opacity:0;pointer-events:none;overflow:hidden;
+  z-index:-1;
+}
+
+/* ═══════════════════════════════════════
+   BRAND BAR
+═══════════════════════════════════════ */
+.brand-bar{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:12px 0 6px;
+  animation:fadeUp .5s ease both;
+}
+.brand-leaf{
+  width:clamp(32px,7vw,40px);height:clamp(32px,7vw,40px);
+  background:linear-gradient(135deg,var(--gn),var(--gd));
+  border-radius:50% 12% 50% 12%;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:clamp(16px,4vw,20px);
+  box-shadow:0 4px 14px rgba(46,125,50,.32);
+}
+.brand-name{
+  font-family:'Yeseva One',serif;
+  font-size:clamp(20px,5vw,27px);
+  color:var(--gd);letter-spacing:.5px;
+}
+
+/* ═══════════════════════════════════════
+   HERO CARD
+═══════════════════════════════════════ */
+.hero-card{
+  background:linear-gradient(145deg,#1B5E20 0%,#2E7D32 50%,#43A047 100%);
+  border-radius:var(--rl);
+  padding:clamp(32px,7vw,56px) clamp(22px,6vw,52px);
+  text-align:center;color:#fff;
+  box-shadow:var(--sh-l);
+  position:relative;overflow:hidden;margin-top:10px;
+}
+.hero-card::before,.hero-card::after{content:'🌿';position:absolute;font-size:clamp(90px,18vw,145px);opacity:.055;pointer-events:none}
+.hero-card::before{top:-15px;right:-15px}
+.hero-card::after{bottom:-10px;left:-10px;transform:rotate(180deg)}
+
+.check-wrap{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:clamp(70px,15vw,90px);height:clamp(70px,15vw,90px);
+  background:rgba(255,255,255,.20);border-radius:50%;margin-bottom:18px;
+  animation:popIn .7s .25s cubic-bezier(.34,1.56,.64,1) both,pulseRing 2.4s 1s ease infinite;
+}
+.check-icon{
+  width:clamp(42px,10vw,55px);height:clamp(42px,10vw,55px);
+  background:#fff;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+}
+.check-icon svg{width:58%;height:58%}
+
+.hero-title{
+  font-family:'Yeseva One',serif;
+  font-size:clamp(22px,5.5vw,34px);
+  line-height:1.2;margin-bottom:10px;
+  text-shadow:0 3px 10px rgba(0,0,0,.25);
+}
+.hero-sub{
+  font-size:clamp(13px,3.4vw,16px);
+  font-weight:600;opacity:.92;line-height:1.6;
+}
+.pay-confirmed-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.20);
+  border:1.5px solid rgba(255,255,255,.38);
+  border-radius:14px;padding:9px 18px;
+  margin-top:16px;font-size:clamp(12px,3vw,14px);
+  font-weight:800;letter-spacing:.3px;
+  backdrop-filter:blur(6px);position:relative;z-index:1;
+}
+.pay-confirmed-badge .pci{font-size:17px}
+.pay-confirmed-badge .pct{opacity:.80;font-weight:600;font-size:.85em}
+.order-pill{
+  display:inline-block;
+  background:rgba(255,255,255,.16);
+  border:1.5px solid rgba(255,255,255,.35);
+  border-radius:999px;padding:6px 20px;
+  font-size:clamp(11px,2.8vw,13px);font-weight:800;
+  letter-spacing:.6px;margin-top:14px;
+  backdrop-filter:blur(6px);position:relative;z-index:1;
+}
+
+/* ═══════════════════════════════════════
+   TICKER
+═══════════════════════════════════════ */
+.ticker-wrap{
+  overflow:hidden;background:var(--gd);border-radius:12px;
+  padding:10px 0;margin-top:14px;
+}
+.ticker-track{
+  display:flex;white-space:nowrap;
+  animation:ticker 20s linear infinite;
+}
+.ticker-item{
+  display:inline-flex;align-items:center;gap:6px;
+  color:#fff;font-size:clamp(12px,3vw,14px);
+  font-weight:700;padding:0 28px;letter-spacing:.3px;
+}
+.tdot{color:var(--gl);font-size:9px}
+
+/* ═══════════════════════════════════════
+   CARD BASE
+═══════════════════════════════════════ */
+.card{
+  background:#fff;border-radius:var(--r);
+  padding:clamp(20px,4.5vw,32px) clamp(18px,4vw,36px);
+  box-shadow:var(--sh-m);margin-top:16px;
+  border:1px solid rgba(46,125,50,.08);
+}
+.card-title{
+  font-family:'Yeseva One',serif;
+  font-size:clamp(15px,4vw,18px);
+  color:var(--gd);margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;
+}
+.cti{
+  width:34px;height:34px;background:var(--gp);
+  border-radius:10px;display:flex;align-items:center;
+  justify-content:center;font-size:17px;flex-shrink:0;
+}
+
+/* ── Trust rows ── */
+.trow{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:12px 0;border-bottom:1px dashed rgba(46,125,50,.13);
+}
+.trow:last-child{border-bottom:none;padding-bottom:0}
+.tic{
+  width:38px;height:38px;border-radius:11px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:19px;flex-shrink:0;background:var(--gp);
+}
+.ttxt{font-size:clamp(13px,3.3vw,15px);line-height:1.55;color:var(--tm);font-weight:600}
+.ttxt strong{color:var(--gd)}
+
+/* ═══════════════════════════════════════
+   WHATSAPP CTA
+═══════════════════════════════════════ */
+.wa-card{
+  background:linear-gradient(145deg,#064E45 0%,#075E54 40%,#128C7E 80%,#1EA97C 100%);
+  border-radius:var(--r);
+  padding:clamp(22px,5vw,34px) clamp(18px,4.5vw,30px);
+  text-align:center;box-shadow:0 10px 50px rgba(37,211,102,.28);
+  position:relative;overflow:hidden;margin-top:16px;
+}
+.wa-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.07) 50%,transparent 100%);
+  background-size:500px 100%;animation:shimmer 3.5s linear infinite;
+}
+.wa-lbl{
+  color:rgba(255,255,255,.88);font-size:clamp(11px,2.8vw,13px);
+  font-weight:800;letter-spacing:.9px;text-transform:uppercase;
+  margin-bottom:16px;position:relative;z-index:1;
+}
+.wa-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  background:#fff;color:#064E45;
+  font-family:'Nunito',sans-serif;
+  font-size:clamp(15px,4vw,18px);font-weight:900;
+  padding:clamp(14px,3.5vw,18px) clamp(18px,4.5vw,32px);
+  border-radius:14px;text-decoration:none;width:100%;
+  box-shadow:0 5px 24px rgba(0,0,0,.22);
+  transition:transform .2s ease,box-shadow .2s ease;
+  animation:bounceWa 3.2s 1.8s ease infinite;
+  position:relative;z-index:1;
+}
+.wa-btn:hover{transform:translateY(-4px)scale(1.02);box-shadow:0 10px 36px rgba(0,0,0,.28);animation:none}
+.wa-btn:active{transform:scale(.97)}
+.wa-bic{font-size:clamp(20px,5vw,25px)}
+.wa-note{color:rgba(255,255,255,.82);font-size:clamp(11px,2.8vw,13px);margin-top:12px;font-weight:700;position:relative;z-index:1}
+
+/* ═══════════════════════════════════════
+   ORDER SUMMARY
+═══════════════════════════════════════ */
+.prod-row{
+  display:flex;align-items:center;gap:14px;
+  padding-bottom:14px;border-bottom:1px dashed rgba(46,125,50,.13);margin-bottom:4px;
+}
+.prod-img{
+  width:clamp(50px,11vw,64px);height:clamp(50px,11vw,64px);
+  background:linear-gradient(135deg,#C8E6C9,#A5D6A7);
+  border-radius:14px;display:flex;align-items:center;justify-content:center;
+  font-size:clamp(24px,6vw,32px);flex-shrink:0;
+  box-shadow:0 4px 16px rgba(46,125,50,.18);
+}
+.pname{font-size:clamp(14px,3.5vw,16px);font-weight:800;color:var(--td);line-height:1.3}
+.psub{font-size:clamp(11px,2.8vw,13px);color:var(--ts);font-weight:600;margin-top:3px}
+
+.orow{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:11px 0;border-bottom:1px dashed rgba(46,125,50,.10);
+  font-size:clamp(13px,3.3vw,15px);
+}
+.orow:last-child{border-bottom:none}
+.olbl{color:var(--ts);font-weight:600}
+.oval{color:var(--td);font-weight:800}
+.oval.grn{color:var(--gm)}
+.oval.free{background:var(--gp);color:var(--gd);padding:3px 12px;border-radius:999px;font-size:.88em}
+
+/* Payment chips */
+.pay-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px dashed rgba(46,125,50,.10)}
+.pay-lbl{color:var(--ts);font-weight:600;font-size:clamp(13px,3.3vw,15px)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-left:auto}
+.chip{
+  display:inline-flex;align-items:center;gap:4px;
+  background:var(--bl);color:var(--bp);
+  font-size:clamp(10px,2.5vw,12px);font-weight:800;
+  padding:4px 10px;border-radius:8px;
+  border:1px solid rgba(21,101,192,.15);
+}
+.chip-ic{font-size:13px}
+
+/* ═══════════════════════════════════════
+   TRUST STATS
+═══════════════════════════════════════ */
+.stats-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(10px,2.5vw,18px);margin-top:16px;
+}
+.stat-box{
+  background:#fff;border-radius:16px;
+  padding:clamp(14px,3.5vw,22px) clamp(8px,2vw,14px);
+  text-align:center;box-shadow:var(--sh-s);
+  border:1px solid rgba(46,125,50,.09);
+  transition:transform .2s,box-shadow .2s;
+}
+.stat-box:hover{transform:translateY(-3px);box-shadow:var(--sh-m)}
+.sic{font-size:clamp(24px,6vw,30px);line-height:1;margin-bottom:7px}
+.snum{
+  font-family:'Yeseva One',serif;
+  font-size:clamp(16px,4.5vw,22px);
+  color:var(--gd);line-height:1;
+}
+.snum.hi{color:var(--gm)}
+.slbl{
+  font-size:clamp(9px,2.3vw,11px);color:var(--ts);
+  font-weight:700;margin-top:4px;line-height:1.35;
+  text-transform:uppercase;letter-spacing:.3px;
+}
+.stars{color:var(--gold);font-size:clamp(10px,2.5vw,13px);letter-spacing:1.5px;margin:2px 0}
+
+/* ═══════════════════════════════════════
+   URGENCY
+═══════════════════════════════════════ */
+.urgency-banner{
+  background:linear-gradient(135deg,#FFF8E1,#FFF3CD);
+  border:2px solid var(--gold);border-radius:var(--r);
+  padding:clamp(14px,3.5vw,20px) clamp(16px,4vw,22px);
+  display:flex;align-items:center;gap:14px;margin-top:16px;
+  box-shadow:0 4px 24px rgba(249,168,37,.18);
+}
+.uic{font-size:clamp(24px,6vw,30px);flex-shrink:0}
+.utxt{font-size:clamp(13px,3.3vw,15px);font-weight:800;color:#6D4C00;line-height:1.4}
+.utxt span{color:#BF360C}
+
+/* ═══════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════ */
+.footer{
+  text-align:center;padding:28px 0 10px;
+  color:var(--ts);font-size:clamp(12px,3vw,14px);font-weight:600;
+}
+.footer-wa{
+  display:inline-flex;align-items:center;gap:7px;
+  color:var(--wd);text-decoration:none;font-weight:800;
+  font-size:clamp(13px,3.3vw,15px);margin-top:8px;
+  padding:10px 22px;background:var(--gp);border-radius:999px;
+  transition:background .2s,transform .15s;
+}
+.footer-wa:hover{background:#C8E6C9;transform:scale(1.03)}
+.fdiv{
+  display:flex;align-items:center;gap:12px;
+  color:rgba(106,143,106,.4);font-size:11px;margin:18px 0;
+}
+.fdiv::before,.fdiv::after{content:'';flex:1;height:1px;background:rgba(46,125,50,.12)}
+.fcopy{margin-top:10px;font-size:11px;color:#b0c4b0}
+
+/* ═══════════════════════════════════════
+   CONFETTI CANVAS
+═══════════════════════════════════════ */
+#cc{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9998}
+</style>
+</head>
+<body>
+
+<canvas id="cc"></canvas>
+
+<!-- SOUNDCLOUD HIDDEN PLAYER -->
+<div id="sc-wrap">
+  <iframe id="sc-iframe"
+    width="100%" height="166" scrolling="no" frameborder="no"
+    allow="autoplay"
+    src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/kumarappankumar/a-celebration&color=%232E7D32&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&buying=false&sharing=false&download=false&loop=true">
+  </iframe>
+</div>
+
+<!-- SOUND TOGGLE -->
+<button class="snd-btn" id="sndBtn" title="Toggle Sound" onclick="toggleSound()">
+  <div class="wave-bars" id="waveBars">
+    <span></span><span></span><span></span><span></span>
+  </div>
+</button>
+
+<div class="pw">
+
+  <!-- BRAND -->
+  <div class="brand-bar">
+    <div class="brand-leaf">🌿</div>
+    <span class="brand-name">NaturaGene</span>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero-card fadeUp d1">
+    <div class="check-wrap">
+      <div class="check-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+    </div>
+    <div class="hero-title">🎉 Order Received Successfully!</div>
+    <div class="hero-sub">Your NaturaGene Knee Patch order is confirmed.<br>Relief is on its way to you! 🌿</div>
+    <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:16px;position:relative;z-index:1">
+      <div class="pay-confirmed-badge">
+        <span class="pci">💳</span>
+        <span>Payment Received</span>
+        <span class="pct">· Online</span>
+        <span>✅</span>
+      </div>
+    </div>
+    <div class="order-pill">📦 ORDER CONFIRMED &nbsp;✓</div>
+  </div>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap fadeUp d2">
+    <div class="ticker-track">
+      <span class="ticker-item">✅ Order Confirmed <span class="tdot">●</span></span>
+      <span class="ticker-item">💳 Online Payment Done <span class="tdot">●</span></span>
+      <span class="ticker-item">🚚 Free Delivery <span class="tdot">●</span></span>
+      <span class="ticker-item">💚 100% Natural <span class="tdot">●</span></span>
+      <span class="ticker-item">⭐ 4.8 Stars <span class="tdot">●</span></span>
+      <span class="ticker-item">🇮🇳 Made for India <span class="tdot">●</span></span>
+      <span class="ticker-item">✅ Order Confirmed <span class="tdot">●</span></span>
+      <span class="ticker-item">💳 Online Payment Done <span class="tdot">●</span></span>
+      <span class="ticker-item">🚚 Free Delivery <span class="tdot">●</span></span>
+      <span class="ticker-item">💚 100% Natural <span class="tdot">●</span></span>
+      <span class="ticker-item">⭐ 4.8 Stars <span class="tdot">●</span></span>
+      <span class="ticker-item">🇮🇳 Made for India <span class="tdot">●</span></span>
+    </div>
+  </div>
+
+  <!-- TRUST CARD -->
+  <div class="card trust-card fadeUp d3">
+    <div class="card-title"><div class="cti">📋</div>What Happens Next?</div>
+    <div class="trow">
+      <div class="tic">📞</div>
+      <div class="ttxt">Our team will <strong>call or WhatsApp you within 24 hours</strong> to confirm delivery details.</div>
+    </div>
+    <div class="trow">
+      <div class="tic">⚡</div>
+      <div class="ttxt"><strong>Confirm on WhatsApp</strong> right now to get <strong>priority processing</strong> — faster dispatch guaranteed.</div>
+    </div>
+    <div class="trow">
+      <div class="tic">🚚</div>
+      <div class="ttxt">Delivery in <strong>3–7 business days</strong>. Your payment is <strong>100% secure & confirmed</strong>.</div>
+    </div>
+  </div>
+
+  <!-- WHATSAPP CTA -->
+  <div class="wa-card fadeUp d4">
+    <div class="wa-lbl">⚡ Speed up your delivery — confirm now</div>
+    <a href="https://wa.me/917383929008?text=Hi%20I%20have%20submitted%20my%20order%20for%20NaturaGene" target="_blank" rel="noopener" class="wa-btn">
+      <span class="wa-bic">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </span>
+      Confirm Order on WhatsApp
+    </a>
+    <div class="wa-note">👆 Tap above — takes only 10 seconds!</div>
+  </div>
+
+  <!-- ORDER SUMMARY -->
+  <div class="card summary-card fadeUp d5">
+    <div class="card-title"><div class="cti">🛒</div>Order Summary</div>
+    <div class="prod-row">
+      <div class="prod-img">🩹</div>
+      <div>
+        <div class="pname">NaturaGene Knee Pain Relief Patch</div>
+        <div class="psub">Herbal · Ayurvedic Formula · Long-lasting Relief</div>
+      </div>
+    </div>
+    <div class="pay-row">
+      <span class="pay-lbl">Payment</span>
+      <div class="chips">
+        <span class="chip"><span class="chip-ic">💳</span>Online Payment</span>
+        <span class="chip"><span class="chip-ic">✅</span>Paid</span>
+      </div>
+    </div>
+    <div class="orow"><span class="olbl">Shipping Charges</span><span class="oval free">🎁 FREE</span></div>
+    <div class="orow"><span class="olbl">Delivery Time</span><span class="oval">3 – 7 Business Days</span></div>
+    <div class="orow"><span class="olbl">Order Status</span><span class="oval grn">✅ Confirmed & Paid</span></div>
+  </div>
+
+  <!-- TRUST STATS -->
+  <div class="stats-grid fadeUp d5">
+    <div class="stat-box">
+      <div class="sic">😊</div>
+      <div class="snum hi" id="cCount">0+</div>
+      <div class="slbl">Happy Customers</div>
+    </div>
+    <div class="stat-box">
+      <div class="sic">⭐</div>
+      <div class="snum">4.8</div>
+      <div class="stars">★★★★★</div>
+      <div class="slbl">Avg Rating</div>
+    </div>
+    <div class="stat-box">
+      <div class="sic">🌿</div>
+      <div class="snum">100%</div>
+      <div class="slbl">Natural Herbal</div>
+    </div>
+  </div>
+
+  <!-- URGENCY -->
+  <div class="urgency-banner fadeUp d6">
+    <div class="uic">⚠️</div>
+    <div class="utxt"><span>Limited Stock Alert!</span> Confirm your order on WhatsApp quickly to ensure fast dispatch.</div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer fadeUp d7">
+    <div>Need help with your order?</div>
+    <a href="https://wa.me/917383929008" target="_blank" rel="noopener" class="footer-wa">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="#128C7E"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp Anytime
+    </a>
+    <div class="fdiv">NaturaGene · Official Store</div>
+    <div class="fcopy">© 2024 NaturaGene · All rights reserved · India 🇮🇳</div>
+  </div>
+
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════
+   🎵 SOUND ENGINE
+   ─ SoundCloud Widget: Tamil Folk celebration (background loop)
+   ─ Web Audio:  Shankh + Dhol fanfare (entry burst, ~5s)
+   ─ Toggle button controls BOTH together
+════════════════════════════════════════════════════════ */
+
+/* ─── SoundCloud Widget API ─── */
+const SC_API = 'https://w.soundcloud.com/player/api.js';
+let scWidget = null;
+let scReady  = false;
+let scPlaying = false;
+
+function loadSCApi(cb){
+  if(window.SC){ cb(); return; }
+  const s=document.createElement('script');
+  s.src=SC_API; s.onload=cb;
+  document.head.appendChild(s);
+}
+
+function initSC(){
+  loadSCApi(()=>{
+    const iframe = document.getElementById('sc-iframe');
+    scWidget = window.SC.Widget(iframe);
+    scWidget.bind(window.SC.Widget.Events.READY, ()=>{
+      scReady = true;
+      scWidget.setVolume(72);
+      // loop hack — restart on finish
+      scWidget.bind(window.SC.Widget.Events.FINISH, ()=>{
+        if(scPlaying){ scWidget.seekTo(0); scWidget.play(); }
+      });
+      if(scPlaying) scWidget.play();
+    });
+  });
+}
+
+function scPlay(){
+  scPlaying=true;
+  if(scReady) scWidget.play();
+  else initSC();
+}
+
+function scPause(){
+  scPlaying=false;
+  if(scReady && scWidget) scWidget.pause();
+}
+
+/* ─── Web Audio: Celebration Fanfare (entry only) ─── */
+let AC=null, MG=null;
+
+function mkAC(){
+  if(AC) return;
+  AC=new(window.AudioContext||window.webkitAudioContext)();
+  MG=AC.createGain(); MG.gain.value=0.28; MG.connect(AC.destination);
+}
+
+function osc(freq,t,dur,type='sine',vol=0.15,bend=0){
+  const o=AC.createOscillator(),g=AC.createGain();
+  o.type=type; o.frequency.setValueAtTime(freq,t);
+  if(bend) o.frequency.linearRampToValueAtTime(freq+bend,t+dur*0.6);
+  g.gain.setValueAtTime(0,t);
+  g.gain.linearRampToValueAtTime(vol,t+0.03);
+  g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+  o.connect(g); g.connect(MG);
+  o.start(t); o.stop(t+dur+0.05);
+}
+
+function drum(t,dur=0.18,freq=80,vol=0.22,drop=40){
+  const o=AC.createOscillator(),g=AC.createGain();
+  o.type='sine'; o.frequency.setValueAtTime(freq,t);
+  o.frequency.exponentialRampToValueAtTime(freq-drop,t+dur);
+  g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+  o.connect(g); g.connect(MG); o.start(t); o.stop(t+dur+0.02);
+  // snap noise
+  const buf=AC.createBuffer(1,AC.sampleRate*0.05,AC.sampleRate);
+  const d=buf.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1);
+  const src=AC.createBufferSource(),gn=AC.createGain();
+  const f=AC.createBiquadFilter(); f.type='bandpass'; f.frequency.value=900; f.Q.value=0.8;
+  gn.gain.setValueAtTime(vol*0.35,t); gn.gain.exponentialRampToValueAtTime(0.001,t+0.06);
+  src.buffer=buf; src.connect(f); f.connect(gn); gn.connect(MG); src.start(t); src.stop(t+0.07);
+}
+
+function shimmer(t,vol=0.06){
+  const buf=AC.createBuffer(1,AC.sampleRate*0.12,AC.sampleRate);
+  const d=buf.getChannelData(0);
+  for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.exp(-i/(AC.sampleRate*0.04));
+  const src=AC.createBufferSource(),g=AC.createGain();
+  const f=AC.createBiquadFilter(); f.type='highpass'; f.frequency.value=5000;
+  g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(0.001,t+0.12);
+  src.buffer=buf; src.connect(f); f.connect(g); g.connect(MG); src.start(t); src.stop(t+0.13);
+}
+
+function shankh(t,freq=246,dur=1.8,vol=0.20){
+  osc(freq,      t, dur, 'sawtooth', vol,    12);
+  osc(freq*2,    t, dur*0.9,'square', vol*0.28, 6);
+  osc(freq*1.007,t+0.05, dur*0.85,'sawtooth', vol*0.38, 10);
+}
+
+function playFanfare(){
+  mkAC();
+  if(AC.state==='suspended') AC.resume();
+  const now=AC.currentTime;
+
+  // 🐚 Two shankh blasts
+  shankh(now+0.05, 246.94, 1.6, 0.20);
+  shankh(now+1.85, 293.66, 1.4, 0.18);
+
+  // 🥁 Dhol rapid fills
+  [0,.20,.40,.62,.84,1.06,1.28,1.52,1.82,2.02,2.20,2.38,2.56,2.76,2.92].forEach((dt,i)=>{
+    drum(now+dt, 0.16, i%3===0?90:68, i%3===0?0.26:0.17, i%3===0?35:24);
+    if(i%2===0) shimmer(now+dt+0.02, 0.065);
+  });
+
+  // 🎺 Victory jingle — Tamil Bhairavi ascending
+  // Sa Re(k) Ga(k) Ma Pa Dha(k) Ni(k) Sa'
+  const VJ=[
+    [261.63,2.8,.20],[293.66,3.0,.18],[311.13,3.18,.18],
+    [349.23,3.36,.18],[392.00,3.54,.22],[415.30,3.76,.18],
+    [466.16,3.94,.18],[523.25,4.12,.55],
+    [659.25,4.70,.14],[587.33,4.84,.12],[523.25,4.96,.14],
+    [493.88,5.10,.12],[523.25,5.22,.45],
+  ];
+  VJ.forEach(([f,off,d])=>{
+    osc(f,      now+off, d, 'sawtooth', 0.13, 4);
+    osc(f*1.005,now+off+0.01, d*0.85,'sine', 0.055);
+  });
+
+  // 🪇 Ghungroo burst at peak
+  for(let i=0;i<6;i++) shimmer(now+4.12+i*0.07, 0.09);
+
+  // 🎊 Cheer swell
+  const cb=AC.createBuffer(1,AC.sampleRate*1.2,AC.sampleRate);
+  const cd=cb.getChannelData(0);
+  for(let i=0;i<cd.length;i++) cd[i]=(Math.random()*2-1)*Math.sin(Math.PI*i/cd.length);
+  const cs=AC.createBufferSource(),cg=AC.createGain();
+  const cf=AC.createBiquadFilter(); cf.type='bandpass'; cf.frequency.value=1200; cf.Q.value=0.5;
+  cg.gain.setValueAtTime(0,now+3.8); cg.gain.linearRampToValueAtTime(0.11,now+4.5);
+  cg.gain.linearRampToValueAtTime(0,now+5.0);
+  cs.buffer=cb; cs.connect(cf); cf.connect(cg); cg.connect(MG);
+  cs.start(now+3.8); cs.stop(now+5.1);
+}
+
+/* ─── Master toggle ─── */
+let appPlaying = false;
+
+function startAll(){
+  appPlaying = true;
+  // 1. Celebration fanfare (Web Audio — instant)
+  playFanfare();
+  // 2. SoundCloud background music
+  scPlay();
+  setWaveBarsVisible(true);
+  document.getElementById('sndBtn').title='🔇 Mute';
+}
+
+function stopAll(){
+  appPlaying = false;
+  scPause();
+  setWaveBarsVisible(false);
+  document.getElementById('sndBtn').innerHTML=
+    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
+  document.getElementById('sndBtn').title='🔊 Play Music';
+}
+
+function setWaveBarsVisible(show){
+  document.getElementById('sndBtn').innerHTML = show
+    ? '<div class="wave-bars" id="waveBars"><span></span><span></span><span></span><span></span></div>'
+    : '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
+}
+
+function toggleSound(){
+  if(!appPlaying) startAll(); else stopAll();
+}
+
+/* ─── Auto-start on first user interaction ─── */
+let started=false;
+function tryStart(){
+  if(started) return; started=true;
+  startAll();
+}
+['click','touchstart','scroll','keydown'].forEach(e=>
+  document.addEventListener(e, tryStart, {once:true, passive:true})
+);
+// Pre-init SC API immediately (no autoplay, just loads)
+window.addEventListener('load', ()=>{ initSC(); });
+// Try immediate start (desktop browsers often allow)
+setTimeout(()=>{ if(!started){ try{ startAll(); started=true; }catch(e){} } }, 500);
+
+
+/* ════════════════════════════════════════
+   CONFETTI
+════════════════════════════════════════ */
+(()=>{
+  const cv=document.getElementById('cc'),ctx=cv.getContext('2d');
+  const R=()=>{cv.width=window.innerWidth;cv.height=window.innerHeight};
+  R();window.addEventListener('resize',R);
+  const cols=['#2E7D32','#66BB6A','#A5D6A7','#F9A825','#fff','#C8E6C9','#81C784','#FFF9C4'];
+  const ps=Array.from({length:140},()=>({
+    x:Math.random()*cv.width,y:Math.random()*cv.height-cv.height*1.1,
+    w:Math.random()*11+4,h:Math.random()*6+3,
+    col:cols[0|Math.random()*cols.length],
+    rot:Math.random()*Math.PI*2,rs:(Math.random()-.5)*.11,
+    sp:Math.random()*2.8+1.5,dr:(Math.random()-.5)*.9,
+    op:Math.random()*.55+.45
+  }));
+  let f=0;
+  function draw(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    ps.forEach(p=>{
+      ctx.save();ctx.globalAlpha=p.op;
+      ctx.translate(p.x+p.w/2,p.y+p.h/2);ctx.rotate(p.rot);
+      ctx.fillStyle=p.col;ctx.beginPath();
+      ctx.ellipse(0,0,p.w/2,p.h/2,0,0,Math.PI*2);ctx.fill();ctx.restore();
+      p.y+=p.sp;p.x+=p.dr;p.rot+=p.rs;
+      if(p.y>cv.height+20){p.y=-20;p.x=Math.random()*cv.width}
+    });
+    f++;if(f<280)requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,cv.width,cv.height);
+  }
+  draw();
+})();
+
+
+/* ════════════════════════════════════════
+   COUNTER ANIMATION — 0 → 2689+
+════════════════════════════════════════ */
+function animCount(el,target,ms=1900){
+  let st=null;
+  (function step(ts){
+    if(!st)st=ts;
+    const p=Math.min((ts-st)/ms,1);
+    const e=1-Math.pow(1-p,3); // ease-out-cubic
+    el.textContent=(0|e*target).toLocaleString('en-IN')+'+';
+    if(p<1)requestAnimationFrame(step);
+    else el.textContent=target.toLocaleString('en-IN')+'+';
+  })(0);
+  // kick off with rAF
+  requestAnimationFrame(ts=>{
+    let st2=null;
+    (function step(ts){
+      if(!st2)st2=ts;
+      const p=Math.min((ts-st2)/ms,1);
+      const e=1-Math.pow(1-p,3);
+      el.textContent=(0|e*target).toLocaleString('en-IN')+'+';
+      if(p<1)requestAnimationFrame(step);
+      else el.textContent=target.toLocaleString('en-IN')+'+';
+    })(ts);
+  });
+}
+
+const cEl=document.getElementById('cCount');
+const ob=new IntersectionObserver(ents=>{
+  ents.forEach(e=>{
+    if(e.isIntersecting){animCount(cEl,2689);ob.disconnect()}
+  });
+},{threshold:0.3});
+ob.observe(cEl);
+</script>
+</body>
+</html>
